@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bemz — Portafolio</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       DECLARACIÓN DE FUENTES DAFONT
+       ========================================================== */
+    @font-face {
+      font-family: 'Aerosoldier';
+      src: url('aerosoldier.otf') format('opentype'), url('aerosoldier.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Beatstreet';
+      src: url('beatstreet.otf') format('opentype'), url('beatstreet.ttf') format('truetype'),
+           url('Beatstreet.otf') format('opentype'), url('Beatstreet.ttf') format('truetype');
+    }
+
+    /* ESTILOS BASE Y PARED OSCURA */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #020305; /* Oscuridad de museo */
+      color: #e0e0e0;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* LUZ FOCAL DESDE EL TECHO (CAE DESDE ARRIBA) */
+    .ceiling-spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse 650px 800px at 50% 0%,
+        rgba(255, 215, 150, 0.28) 0%,
+        rgba(255, 170, 80, 0.08) 50%,
+        rgba(2, 3, 5, 0.98) 100%
+      );
+    }
+
+    /* LUZ DEL CURSOR (LINTERNA PUNTUAL) */
+    .mouse-flashlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      background: radial-gradient(
+        circle 100px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 235, 190, 0.12) 0%,
+        transparent 80%
+      );
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100vw;
+      padding: 60px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ENCABEZADO CON 4 DEDOS DE DISTANCIA */
+    header {
+      text-align: center;
+      margin-bottom: 90px;
+    }
+
+    .artist-name {
+      font-family: 'Aerosoldier', 'Cinzel', serif;
+      font-size: 6rem;
+      color: #ffffff;
+      letter-spacing: 5px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+      margin-bottom: 75px; /* ~4 dedos de distancia */
+    }
+
+    .subheading {
+      font-size: 1.1rem;
+      color: #a0a8b5;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 35px;
+    }
+
+    .quote-wrapper {
+      display: inline-block;
+      text-align: center;
+    }
+
+    .gold-line {
+      width: 150px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin: 0 auto 15px auto;
+    }
+
+    .quote-text {
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-style: italic;
+    }
+
+    /* DISCIPLINAS (FUENTE BEATSTREET) */
+    .disciplines-section {
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      margin-bottom: 70px;
+      flex-wrap: wrap;
+    }
+
+    .discipline-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.3);
+      font-family: 'Beatstreet', 'Montserrat', sans-serif;
+      font-size: 2.2rem;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      padding: 5px 15px;
+    }
+
+    .discipline-btn.active {
+      color: #ffffff;
+      font-size: 3rem;
+      text-shadow: 0 0 20px rgba(255, 220, 150, 0.9), 0 0 35px #d4af37;
+      transform: scale(1.1);
+    }
+
+    /* CARRUSEL DE OBRAS INFINITO Y CENTRADO */
+    .gallery-wrapper {
+      width: 100vw;
+      position: relative;
+      overflow: hidden;
+      padding: 40px 0;
+    }
+
+    .gallery-track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    /* TARJETAS Y MARCOS */
+    .artwork-card {
+      flex: 0 0 360px;
+      cursor: pointer;
+      opacity: 0.25;
+      transform: scale(0.8);
+      transition: all 0.5s ease;
+      user-select: none;
+    }
+
+    .artwork-card.focused {
+      opacity: 1;
+      transform: scale(1.08);
+      cursor: default;
+    }
+
+    .frame-black-gloss {
+      padding: 16px;
+      background: #080808;
+      box-shadow: inset 0 0 4px rgba(255,255,255,0.25), 0 10px 30px rgba(0,0,0,0.95);
+      border: 3px solid #141414;
+    }
+
+    .frame-dark-silver {
+      padding: 18px;
+      background: linear-gradient(135deg, #2b2e34 0%, #0d0e10 50%, #3b3e44 100%);
+      box-shadow: 0 0 25px rgba(180, 195, 210, 0.3), 0 15px 35px rgba(0,0,0,0.95);
+      border: 2px solid #585f67;
+    }
+
+    .artwork-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* TEXTO DE OBRA BLANCO Y MÁS GRANDE */
+    .artwork-info {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .artwork-title {
+      font-family: 'Aerosoldier', 'Cinzel', serif;
+      color: #ffffff; /* Blanco solicitado */
+      font-size: 2.1rem; /* Más grande */
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .artwork-desc {
+      color: #b0b0b0;
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    /* NAVEGACIÓN POR FLECHAS */
+    .nav-arrow {
+      position: absolute;
+      top: 40%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 3.5rem;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.3s ease;
+      padding: 20px;
+    }
+
+    .nav-arrow:hover {
+      color: #ffffff;
+    }
+
+    .nav-prev { left: 5vw; }
+    .nav-next { right: 5vw; }
+
+    /* FOOTER / CONTACTO */
+    footer {
+      width: 100vw;
+      text-align: center;
+      padding: 80px 20px;
+      margin-top: 40px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 70px;
+      margin-top: 30px;
+    }
+
+    .contact-item {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .contact-item:hover { color: #d4af37; }
+  </style>
+</head>
+<body>
+
+  <div class="ceiling-spotlight"></div>
+  <div class="mouse-flashlight"></div>
+
+  <div class="container">
+    
+    <header>
+      <h1 class="artist-name">BEMZ</h1>
+      <p class="subheading">Artista Plástico — Tatuador — Muralista</p>
+      
+      <div class="quote-wrapper">
+        <div class="gold-line"></div>
+        <p class="quote-text">Siempre seremos eternos aprendices.</p>
+      </div>
+    </header>
+
+    <!-- DISCIPLINAS (BEATSTREET) -->
+    <section class="disciplines-section" id="disciplinesContainer">
+      <!-- Generado dinámicamente -->
+    </section>
+
+    <!-- GALERÍA INFINITA Y CENTRADA -->
+    <section class="gallery-wrapper">
+      <button class="nav-arrow nav-prev" onclick="moveGallery(-1)">&#10094;</button>
+      <button class="nav-arrow nav-next" onclick="moveGallery(1)">&#10095;</button>
+      
+      <div class="gallery-track" id="galleryTrack">
+        <!-- Obras renderizadas -->
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <footer>
+      <h2 style="font-family: 'Aerosoldier', serif; color: #ffffff; font-size: 2.2rem;">Contacto</h2>
+      <div class="contact-links">
+        <a href="https://instagram.com" target="_blank" class="contact-item">Instagram</a>
+        <a href="https://wa.me/" target="_blank" class="contact-item" style="color: #d4af37;">WhatsApp Directo</a>
+        <a href="mailto:correo@ejemplo.com" class="contact-item">Correo Electrónico</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // BASE DE DATOS DE OBRAS (Inicia con Tatuajes por defecto)
+    const works = [
+      { id: 1, title: 'Sombra en la Piel', category: 'tattoos', master: true, desc: 'Línea fina y sombreado suave sobre piel.', img: 'https://picsum.photos/400/500?random=1' },
+      { id: 2, title: 'Blackwork Geométrico', category: 'tattoos', master: false, desc: 'Tatuaje en negro intenso sobre antebrazo.', img: 'https://picsum.photos/400/500?random=2' },
+      { id: 3, title: 'Boceto de Sombra', category: 'carboncillo', master: false, desc: 'Estudio de anatomía y claroscuro.', img: 'https://picsum.photos/400/500?random=3' },
+      { id: 4, title: 'Mirada Profunda', category: 'carboncillo', master: true, desc: 'Carboncillo sobre fondo oscuro.', img: 'https://picsum.photos/400/500?random=4' },
+      { id: 5, title: 'Retrato al Óleo', category: 'oleo', master: false, desc: 'Capa sobre capa en técnica tradicional.', img: 'https://picsum.photos/400/500?random=5' },
+      { id: 6, title: 'Eternidad en Lienzo', category: 'oleo', master: true, desc: 'Obra principal de gran formato.', img: 'https://picsum.photos/400/500?random=6' },
+      { id: 7, title: 'Pincelada Acrílica', category: 'acrilico', master: false, desc: 'Contraste de secado rápido y texturas.', img: 'https://picsum.photos/400/500?random=7' },
+      { id: 8, title: 'Mural Urbano I', category: 'muralismo', master: false, desc: 'Intervención de gran escala en muro exterior.', img: 'https://picsum.photos/400/500?random=8' },
+      { id: 9, title: 'Espacio Abierto', category: 'muralismo', master: true, desc: 'Muralismo contemporáneo.', img: 'https://picsum.photos/400/500?random=9' }
+    ];
+
+    const categories = [
+      { id: 'tattoos', name: 'Tatuajes' },
+      { id: 'carboncillo', name: 'Carboncillo' },
+      { id: 'oleo', name: 'Óleo' },
+      { id: 'acrilico', name: 'Acrílico' },
+      { id: 'muralismo', name: 'Muralismo' }
+    ];
+
+    let currentIndex = 0; // Índice de la obra centrada
+
+    // SEGUIMIENTO LINTERNA
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
+
+    // RENDERIZAR BOTONES DE DISCIPLINAS
+    const discContainer = document.getElementById('disciplinesContainer');
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = `discipline-btn ${cat.id === 'tattoos' ? 'active' : ''}`;
+      btn.innerText = cat.name;
+      btn.dataset.id = cat.id;
+      btn.onclick = () => selectCategory(cat.id);
+      discContainer.appendChild(btn);
+    });
+
+    // RENDERIZAR GALERÍA CON BUCLE INFINITO (360 GRADOS)
+    const galTrack = document.getElementById('galleryTrack');
+
+    function renderGallery() {
+      galTrack.innerHTML = '';
+      
+      // Para lograr la ilusión de pasillo infinito sin bordes vacíos,
+      // ordenamos el arreglo según el índice actual centrado
+      const total = works.length;
+      
+      for (let i = -2; i <= 2; i++) {
+        let workIdx = (currentIndex + i) % total;
+        if (workIdx < 0) workIdx += total;
+
+        const work = works[workIdx];
+        const card = document.createElement('div');
+        card.className = `artwork-card ${work.master ? 'frame-dark-silver' : 'frame-black-gloss'} ${i === 0 ? 'focused' : ''}`;
+        card.onclick = () => moveGallery(i);
+
+        card.innerHTML = `
+          <img src="${work.img}" class="artwork-img" alt="${work.title}">
+          <div class="artwork-info">
+            <h3 class="artwork-title">${work.title}</h3>
+            <p class="artwork-desc">${work.desc}</p>
+          </div>
+        `;
+        galTrack.appendChild(card);
+      }
+
+      // Actualizar disciplina activa
+      const currentCategory = works[currentIndex].category;
+      document.querySelectorAll('.discipline-btn').forEach(btn => {
+        if (btn.dataset.id === currentCategory) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function moveGallery(step) {
+      const total = works.length;
+      currentIndex = (currentIndex + step + total) % total;
+      renderGallery();
+    }
+
+    function selectCategory(catId) {
+      const targetIdx = works.findIndex(w => w.category === catId);
+      if (targetIdx !== -1) {
+        currentIndex = targetIdx;
+        renderGallery();
+      }
+    }
+
+    // NAVEGACIÓN TECLADO
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') moveGallery(1);
+      if (e.key === 'ArrowLeft') moveGallery(-1);
+    });
+
+    // INICIALIZAR
+    renderGallery();
+  </script>
+</body>
+</html>
