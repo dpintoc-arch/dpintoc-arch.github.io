@@ -40,3 +40,7 @@ section, footer {
   font-family: 'SprayLetters';
   src: url('spray_letters.otf') format('opentype');
 }
+@font-face {
+  font-family: 'Beatstreet';
+  src: url('beatstreet.ttf') format('truetype');
+  }
