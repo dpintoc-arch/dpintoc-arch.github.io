@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bemz — Portafolio Nocturno</title>
+  
+  <!-- Carga de fuentes de respaldo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@200;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       1. DECLARACIÓN DE FUENTES DAFONT LOCALES
+       ========================================================== */
+    @font-face {
+      font-family: 'Aerosoldier';
+      src: url('aerosoldier.otf') format('opentype'),
+           url('Aerosoldier_PERSONAL_USE_ONLY.otf') format('opentype'),
+           url('aerosoldier.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Beatstreet';
+      src: url('beatstreet.ttf') format('truetype'),
+           url('beatstreet.otf') format('opentype'),
+           url('Beatstreet.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* ==========================================================
+       2. REGLAS GLOBALES Y PARED OSCURA DE MUSEO
+       ========================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      background-color: #020204; /* Oscuridad de museo */
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    .museum-viewport {
+      position: relative;
+      width: 100vw;
+      min-height: 250vh;
+      padding: 70px 0 140px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 130px;
+    }
+
+    /* ==========================================================
+       3. ILUMINACIÓN TEATRAL CENITAL Y LINTERNA DE CURSOR
+       ========================================================== */
+    .spotlight-beam {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      max-width: 460px; /* Luz del techo estrecha y focalizada */
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse 280px 850px at 50% 0%,
+        rgba(255, 230, 180, 0.35) 0%,
+        rgba(255, 170, 80, 0.10) 45%,
+        rgba(2, 2, 4, 0.98) 85%
+      );
+    }
+
+    /* Linterna puntual que SOLO se muestra si hay mouse real disponible */
+    .flashlight-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      background: radial-gradient(
+        circle 90px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 235, 190, 0.12) 0%,
+        transparent 80%
+      );
+    }
+
+    /* Ocultar la linterna en dispositivos táctiles (Celular/Tablet) */
+    @media (pointer: coarse) {
+      .flashlight-overlay {
+        display: none !important;
+      }
+    }
+
+    /* ==========================================================
+       4. ENCABEZADO PRINCIPAL (BEMZ)
+       ========================================================== */
+    header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .artist-name {
+      font-family: 'Aerosoldier', 'Cinzel', serif;
+      font-size: clamp(6rem, 16vw, 12rem);
+      color: #ffffff;
+      letter-spacing: 12px;
+      line-height: 0.85;
+      text-shadow: 0 0 35px rgba(255, 255, 255, 0.5), 0 0 60px rgba(212, 175, 55, 0.25);
+      margin-bottom: 120px; /* Distancia amplia entre BEMZ y subtítulo */
+    }
+
+    .subheading {
+      font-size: clamp(0.85rem, 3.5vw, 1.2rem);
+      color: #9298a4;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin-bottom: 40px;
+    }
+
+    .quote-container {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gold-divider {
+      width: 160px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin-bottom: 16px;
+    }
+
+    .quote-text {
+      color: #ffffff;
+      font-size: clamp(0.95rem, 3.8vw, 1.3rem);
+      font-style: italic;
+      letter-spacing: 1.5px;
+      font-weight: 300;
+    }
+
+    /* ==========================================================
+       5. ESTRUCTURA DE CARROUSEL / CINTA INFINITA
+       ========================================================== */
+    .infinite-carousel-container {
+      position: relative;
+      z-index: 2;
+      width: 100vw;
+      overflow: hidden;
+      padding: 20px 0;
+      touch-action: pan-y;
+    }
+
+    .infinite-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      cursor: grab;
+    }
+
+    .infinite-track:active {
+      cursor: grabbing;
+    }
+
+    /* ==========================================================
+       6. CINTA DE DISCIPLINAS
+       ========================================================== */
+    .discipline-item {
+      flex: 0 0 auto;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-family: 'Beatstreet', 'Montserrat', sans-serif;
+      font-size: clamp(2.2rem, 6.5vw, 3.6rem);
+      padding: 10px 45px;
+      cursor: pointer;
+      white-space: nowrap;
+      opacity: 0.05;
+      transform: scale(0.8);
+      filter: blur(5px);
+      transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease, color 0.3s;
+    }
+
+    .discipline-item.focused {
+      opacity: 1;
+      transform: scale(1.15);
+      filter: blur(0);
+      text-shadow: 0 0 25px rgba(255, 220, 160, 0.9), 0 0 45px rgba(212, 175, 55, 0.7);
+    }
+
+    /* ==========================================================
+       7. CINTA DE OBRAS DE ARTE (SIN MARCO / SOLO IMAGEN Y TEXTO)
+       ========================================================== */
+    .artwork-card {
+      flex: 0 0 300px;
+      margin: 0 25px;
+      opacity: 0.12; /* Los de los lados se aprecian levemente */
+      transform: scale(0.82);
+      filter: blur(4px);
+      transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .artwork-card {
+        flex: 0 0 380px;
+        margin: 0 40px;
+      }
+    }
+
+    .artwork-card.focused {
+      opacity: 1;
+      transform: scale(1.08);
+      filter: blur(0);
+      cursor: default;
+    }
+
+    .artwork-image-container {
+      width: 100%;
+      height: 420px;
+      overflow: hidden;
+      background-color: #08080a;
+      border-radius: 4px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .artwork-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* TITULOS DE OBRAS MÁS GRANDES Y CON MÁS ESPACIO ENTRE LETRAS */
+    .artwork-info {
+      margin-top: 25px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .artwork-title {
+      font-family: 'Aerosoldier', 'Cinzel', serif;
+      color: #ffffff !important;
+      font-size: clamp(2rem, 5vw, 2.7rem); /* Título más grande */
+      letter-spacing: 5px; /* Más espacio entre letras */
+      margin-bottom: 10px;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+      line-height: 1.1;
+    }
+
+    .artwork-desc {
+      color: #d0d4dc;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.4;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* Zonas laterales de desplazamiento continuo para el mouse */
+    .hover-zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 15vw;
+      z-index: 10;
+      pointer-events: auto;
+    }
+    .hover-zone-left { left: 0; }
+    .hover-zone-right { right: 0; }
+
+    /* ==========================================================
+       8. SECCIÓN CONTACTO ("WORK WITH US")
+       ========================================================== */
+    .contact-section {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .contact-title {
+      font-family: 'Beatstreet', 'Aerosoldier', serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      color: #ffffff;
+      margin-bottom: 25px;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+      letter-spacing: 2px;
+    }
+
+    .contact-item {
+      flex: 0 0 240px; /* Tamaño que permite ver los de los lados en celular */
+      margin: 0 15px;
+      color: #ffffff;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.18; /* Visibles sutilmente a los lados */
+      transform: scale(0.85);
+      filter: blur(3px);
+      transition: all 0.45s ease;
+      cursor: pointer;
+    }
+
+    .contact-item.focused {
+      opacity: 1;
+      transform: scale(1.1);
+      filter: blur(0);
+    }
+
+    .contact-main-text {
+      font-family: 'Beatstreet', 'Montserrat', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      color: #ffffff;
+      margin-bottom: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-item.focused .contact-main-text {
+      color: #d4af37;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    }
+
+    /* Arroba o handle editable */
+    .contact-handle {
+      font-size: 0.9rem;
+      color: #a0a6b2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    .swipe-hint {
+      color: #707580;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .hover-zone { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Luces cenitales y linterna -->
+  <div class="spotlight-beam"></div>
+  <div class="flashlight-overlay" id="flashlight"></div>
+
+  <div class="museum-viewport">
+    
+    <!-- ENCABEZADO -->
+    <header>
+      <h1 class="artist-name">BEMZ</h1>
+      <p class="subheading">Artista Plástico — Tatuador — Muralista</p>
+      
+      <div class="quote-container">
+        <div class="gold-divider"></div>
+        <p class="quote-text">Siempre seremos eternos aprendices.</p>
+      </div>
+    </header>
+
+    <!-- CINTA INFINITA 1: DISCIPLINAS -->
+    <section class="infinite-carousel-container" id="discCarousel">
+      <div class="infinite-track" id="discTrack"></div>
+      <p class="swipe-hint">‹ Desliza para explorar disciplinas ›</p>
+    </section>
+
+    <!-- CINTA INFINITA 2: OBRAS DE ARTE (2 POR DISCIPLINA) -->
+    <section class="infinite-carousel-container" id="artCarousel">
+      <div class="hover-zone hover-zone-left" id="artHoverLeft"></div>
+      <div class="hover-zone hover-zone-right" id="artHoverRight"></div>
+
+      <div class="infinite-track" id="artTrack"></div>
+      <p class="swipe-hint">‹ Desliza para ver las obras ›</p>
+    </section>
+
+    <!-- CINTA INFINITA 3: CONTACTO -->
+    <section class="contact-section">
+      <h2 class="contact-title">WORK WITH US</h2>
+      <div class="infinite-carousel-container" id="contactCarousel">
+        <div class="infinite-track" id="contactTrack"></div>
+      </div>
+      <p class="swipe-hint">‹ Desliza para ver opciones de contacto ›</p>
+    </section>
+
+  </div>
+
+  <script>
+    /* ==========================================================
+       BASE DE DATOS CON RUTAS LOCALES (2 OBRAS POR DISCIPLINA)
+       ========================================================== */
+    const worksData = [
+      // TATUAJES
+      { id: 1, title: 'Sombras en la Piel', category: 'tattoos', desc: 'Línea fina y sombreado suave sobre piel.', img: 'images/tattoo1.jpg' },
+      { id: 2, title: 'Blackwork Puro', category: 'tattoos', desc: 'Tatuaje geométrico en negro intenso.', img: 'images/tattoo2.jpg' },
+      
+      // CARBONCILLO
+      { id: 3, title: 'Anatomía & Claroscuro', category: 'carboncillo', desc: 'Estudio de sombras con trazo directo sobre papel.', img: 'images/carboncillo1.jpg' },
+      { id: 4, title: 'Mirada en la Penumbra', category: 'carboncillo', desc: 'Retrato dramático a carboncillo sobre fondo oscuro.', img: 'images/carboncillo2.jpg' },
+      
+      // ÓLEO Y ACRÍLICO (UNIFICADOS)
+      { id: 5, title: 'Lienzo Texturizado', category: 'oleo-acrilico', desc: 'Capas de acrílico con acabado en óleo tradicional.', img: 'images/oleo1.jpg' },
+      { id: 6, title: 'Eternidad en Color', category: 'oleo-acrilico', desc: 'Obra de gran formato con técnica mixta.', img: 'images/oleo2.jpg' },
+      
+      // MURALISMO
+      { id: 7, title: 'Muro Urbano I', category: 'muralismo', desc: 'Intervención de gran escala en muro exterior.', img: 'images/mural1.jpg' },
+      { id: 8, title: 'Espacio Abierto', category: 'muralismo', desc: 'Muralismo contemporáneo con aerosol y acrílicos.', img: 'images/mural2.jpg' }
+    ];
+
+    /* Fallbacks visuales inmediatos si la imagen local no existe todavía */
+    const fallbackImages = {
+      'images/tattoo1.jpg': 'https://picsum.photos/500/650?random=101',
+      'images/tattoo2.jpg': 'https://picsum.photos/500/650?random=102',
+      'images/carboncillo1.jpg': 'https://picsum.photos/500/650?random=103',
+      'images/carboncillo2.jpg': 'https://picsum.photos/500/650?random=104',
+      'images/oleo1.jpg': 'https://picsum.photos/500/650?random=105',
+      'images/oleo2.jpg': 'https://picsum.photos/500/650?random=106',
+      'images/mural1.jpg': 'https://picsum.photos/500/650?random=107',
+      'images/mural2.jpg': 'https://picsum.photos/500/650?random=108'
+    };
+
+    const categoriesData = [
+      { id: 'tattoos', name: 'Tatuajes' },
+      { id: 'carboncillo', name: 'Carboncillo' },
+      { id: 'oleo-acrilico', name: 'Óleo y Acrílico' },
+      { id: 'muralismo', name: 'Muralismo' }
+    ];
+
+    /* CONTACTOS EDITABLES CON ARROBAS O DATOS DEBAJO */
+    const contactData = [
+      { name: 'Instagram', handle: '@bemz_art', url: 'https://instagram.com' },
+      { name: 'WhatsApp', handle: '+57 300 000 0000', url: 'https://wa.me/' },
+      { name: 'Correo Electrónico', handle: 'contacto@bemzart.com', url: 'mailto:contacto@bemzart.com' }
+    ];
+
+    /* SEGUIMIENTO DE LINTERNA DEL MOUSE */
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
+
+    /* ==========================================================
+       CLASE GENERAL DE CARRUSEL INFINITO SIN "RETORNO"
+       ========================================================== */
+    class SeamlessCarousel {
+      constructor(containerId, trackId, items, renderCallback, onSelectCallback) {
+        this.container = document.getElementById(containerId);
+        this.track = document.getElementById(trackId);
+        this.baseItems = items;
+        this.renderCallback = renderCallback;
+        this.onSelectCallback = onSelectCallback;
+        
+        // Multiplicamos copias para bucle continuo de 360 grados
+        this.repeatCount = 7;
+        this.virtualItems = [];
+        for (let r = 0; r < this.repeatCount; r++) {
+          this.baseItems.forEach((item, baseIndex) => {
+            this.virtualItems.push({ ...item, baseIndex });
+          });
+        }
+
+        // Empezar en el bloque central
+        this.currentIndex = Math.floor(this.repeatCount / 2) * this.baseItems.length;
+        this.currentTranslate = 0;
+        this.startX = 0;
+        this.isDragging = false;
+        this.isSyncing = false; // Previene bucles infinitos de sincronización
+
+        this.init();
+      }
+
+      init() {
+        this.render();
+        this.attachTouchEvents();
+        setTimeout(() => this.updatePosition(false), 60);
+      }
+
+      render() {
+        this.track.innerHTML = '';
+        this.virtualItems.forEach((vItem, vIndex) => {
+          const element = this.renderCallback(vItem, vIndex);
+          element.addEventListener('click', () => {
+            if (this.currentIndex !== vIndex) {
+              this.currentIndex = vIndex;
+              this.updatePosition(true);
+              if (this.onSelectCallback && !this.isSyncing) {
+                this.onSelectCallback(vItem, vIndex);
+              }
+            }
+          });
+          this.track.appendChild(element);
+        });
+      }
+
+      updatePosition(animate = true) {
+        const elements = this.track.children;
+        if (!elements.length) return;
+
+        if (animate) {
+          this.track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
+        } else {
+          this.track.style.transition = 'none';
+        }
+
+        const targetElement = elements[this.currentIndex];
+        const containerCenter = window.innerWidth / 2;
+        const elementCenter = targetElement.offsetLeft + targetElement.offsetWidth / 2;
+
+        this.currentTranslate = containerCenter - elementCenter;
+        this.track.style.transform = `translateX(${this.currentTranslate}px)`;
+
+        // Iluminar únicamente el elemento central
+        Array.from(elements).forEach((el, idx) => {
+          if (idx === this.currentIndex) {
+            el.classList.add('focused');
+          } else {
+            el.classList.remove('focused');
+          }
+        });
+
+        // RE-CENTRAMIENTO SILENCIOSO (Mantiene el carrusel verdaderamente infinito)
+        const baseLen = this.baseItems.length;
+        const minBound = baseLen * 2;
+        const maxBound = baseLen * (this.repeatCount - 2);
+
+        if (this.currentIndex < minBound || this.currentIndex > maxBound) {
+          setTimeout(() => {
+            const currentBaseIndex = this.virtualItems[this.currentIndex].baseIndex;
+            const centerBlock = Math.floor(this.repeatCount / 2);
+            this.currentIndex = (centerBlock * baseLen) + currentBaseIndex;
+            this.updatePosition(false);
+          }, 460);
+        }
+      }
+
+      attachTouchEvents() {
+        this.track.addEventListener('touchstart', (e) => {
+          this.startX = e.touches[0].clientX;
+          this.isDragging = true;
+          this.track.style.transition = 'none';
+        }, { passive: true });
+
+        this.track.addEventListener('touchmove', (e) => {
+          if (!this.isDragging) return;
+          const currentX = e.touches[0].clientX;
+          const diff = currentX - this.startX;
+          this.track.style.transform = `translateX(${this.currentTranslate + diff}px)`;
+        }, { passive: true });
+
+        this.track.addEventListener('touchend', (e) => {
+          if (!this.isDragging) return;
+          this.isDragging = false;
+          const endX = e.changedTouches[0].clientX;
+          const diff = endX - this.startX;
+
+          if (Math.abs(diff) > 35) {
+            if (diff < 0) this.currentIndex++;
+            else this.currentIndex--;
+            
+            this.updatePosition(true);
+            
+            if (this.onSelectCallback && !this.isSyncing) {
+              const currentVItem = this.virtualItems[this.currentIndex];
+              this.onSelectCallback(currentVItem, this.currentIndex);
+            }
+          } else {
+            this.updatePosition(true);
+          }
+        });
+      }
+
+      // Sincronizar hacia una categoría específica
+      syncToCategory(categoryId) {
+        this.isSyncing = true;
+        const baseLen = this.baseItems.length;
+        const currentBaseIdx = this.virtualItems[this.currentIndex].baseIndex;
+        
+        // Buscar el elemento más cercano que coincida con la categoría
+        let targetBaseIdx = this.baseItems.findIndex(item => item.category === categoryId || item.id === categoryId);
+        
+        if (targetBaseIdx !== -1) {
+          let diff = targetBaseIdx - currentBaseIdx;
+          this.currentIndex += diff;
+          this.updatePosition(true);
+        }
+        
+        setTimeout(() => { this.isSyncing = false; }, 500);
+      }
+    }
+
+    /* ==========================================================
+       INICIALIZACIÓN Y SINCRONIZACIÓN
+       ========================================================== */
+
+    // 1. Carrusel de Disciplinas
+    const discCarousel = new SeamlessCarousel(
+      'discCarousel', 'discTrack', categoriesData,
+      (vItem) => {
+        const btn = document.createElement('button');
+        btn.className = 'discipline-item';
+        btn.innerText = vItem.name;
+        return btn;
+      },
+      (vItem) => {
+        // Al seleccionar una disciplina, la galería salta a las obras de esa disciplina
+        artCarousel.syncToCategory(vItem.id);
+      }
+    );
+
+    // 2. Carrusel de Obras de Arte
+    const artCarousel = new SeamlessCarousel(
+      'artCarousel', 'artTrack', worksData,
+      (vItem) => {
+        const card = document.createElement('div');
+        card.className = 'artwork-card';
+        
+        const localSrc = vItem.img;
+        const fallbackSrc = fallbackImages[vItem.img] || 'https://picsum.photos/500/650';
+
+        card.innerHTML = `
+          <div class="artwork-image-container">
+            <img src="${localSrc}" 
+                 onerror="this.onerror=null; this.src='${fallbackSrc}';" 
+                 class="artwork-img" 
+                 alt="${vItem.title}">
+          </div>
+          <div class="artwork-info">
+            <h3 class="artwork-title">${vItem.title}</h3>
+            <p class="artwork-desc">${vItem.desc}</p>
+          </div>
+        `;
+        return card;
+      },
+      (vItem) => {
+        // Al cambiar de obra, la disciplina superior se sincroniza automáticamente
+        discCarousel.syncToCategory(vItem.category);
+      }
+    );
+
+    // 3. Carrusel de Contacto
+    const contactCarousel = new SeamlessCarousel(
+      'contactCarousel', 'contactTrack', contactData,
+      (vItem) => {
+        const a = document.createElement('a');
+        a.className = 'contact-item';
+        a.href = vItem.url;
+        a.target = '_blank';
+        a.innerHTML = `
+          <span class="contact-main-text">${vItem.name}</span>
+          <span class="contact-handle">${vItem.handle}</span>
+        `;
+        return a;
+      }
+    );
+
+    /* MOUSE HOVER LATERAL (Navegación continua en escritorio) */
+    let hoverInterval = null;
+    const leftZone = document.getElementById('artHoverLeft');
+    const rightZone = document.getElementById('artHoverRight');
+
+    leftZone.addEventListener('mouseenter', () => {
+      if (hoverInterval) clearInterval(hoverInterval);
+      hoverInterval = setInterval(() => {
+        artCarousel.currentIndex--;
+        artCarousel.updatePosition(true);
+        const currentVItem = artCarousel.virtualItems[artCarousel.currentIndex];
+        discCarousel.syncToCategory(currentVItem.category);
+      }, 1400);
+    });
+
+    leftZone.addEventListener('mouseleave', () => clearInterval(hoverInterval));
+
+    rightZone.addEventListener('mouseenter', () => {
+      if (hoverInterval) clearInterval(hoverInterval);
+      hoverInterval = setInterval(() => {
+        artCarousel.currentIndex++;
+        artCarousel.updatePosition(true);
+        const currentVItem = artCarousel.virtualItems[artCarousel.currentIndex];
+        discCarousel.syncToCategory(currentVItem.category);
+      }, 1400);
+    });
+
+    rightZone.addEventListener('mouseleave', () => clearInterval(hoverInterval));
+
+    /* NAVEGACIÓN TECLADO */
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        artCarousel.currentIndex++;
+        artCarousel.updatePosition(true);
+        const currentVItem = artCarousel.virtualItems[artCarousel.currentIndex];
+        discCarousel.syncToCategory(currentVItem.category);
+      } else if (e.key === 'ArrowLeft') {
+        artCarousel.currentIndex--;
+        artCarousel.updatePosition(true);
+        const currentVItem = artCarousel.virtualItems[artCarousel.currentIndex];
+        discCarousel.syncToCategory(currentVItem.category);
+      }
+    });
+
+    /* REAJUSTE AL CAMBIAR TAMAÑO / ORIENTACIÓN EN CELULARES */
+    window.addEventListener('resize', () => {
+      discCarousel.updatePosition(false);
+      artCarousel.updatePosition(false);
+      contactCarousel.updatePosition(false);
+    });
+  </script>
+</body>
+</html>
