@@ -1,0 +1,42 @@
+/* Configuración general */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+}
+
+/* Encabezado */
+header {
+    background-color: #2b2d42;
+    color: white;
+    padding: 3rem 1rem;
+}
+
+/* Secciones */
+section, footer {
+    padding: 2rem 1rem;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Tarjetas de proyectos */
+.tarjeta-proyecto {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 1rem;
+}/* Declaración de fuentes locales de DaFont */
+@font-face {
+  font-family: 'Aerosoldier';
+  src: url('aerosoldier.otf') format('opentype'); /* Si es .ttf, usa format('truetype') */
+}
+
+@font-face {
+  font-family: 'SprayLetters';
+  src: url('spray_letters.otf') format('opentype');
+}
