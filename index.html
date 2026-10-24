@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bemz — Portafolio</title>
+  
+  <!-- Carga de fuentes de Google Fonts para respaldo elegante -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       1. DECLARACIÓN DE FUENTES DAFONT LOCALES
+       ========================================================== */
+    @font-face {
+      font-family: 'Aerosoldier';
+      src: url('aerosoldier.otf') format('opentype'),
+           url('Aerosoldier_PERSONAL_USE_ONLY.otf') format('opentype'),
+           url('aerosoldier.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Beatstreet';
+      src: url('beatstreet.ttf') format('truetype'),
+           url('beatstreet.otf') format('opentype'),
+           url('Beatstreet.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* ==========================================================
+       2. REGLAS GLOBALES Y PARED OSCURA DE MUSEO
+       ========================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      background-color: #010103; /* Oscuridad casi total */
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* Estructura con altura amplia para exploración vertical con scroll */
+    .museum-viewport {
+      position: relative;
+      width: 100vw;
+      min-height: 280vh; /* Altura muy amplia para obligar a hacer scroll */
+      padding: 80px 0 160px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 160px; /* Gran distancia entre secciones */
+    }
+
+    /* ==========================================================
+       3. SISTEMA DE ILUMINACIÓN TEATRAL
+       ========================================================== */
+    
+    /* Cono de luz cenital estrecho centrado desde el techo */
+    .spotlight-beam {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      max-width: 520px; /* Luz mucho más estrecha y dramática */
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse 300px 900px at 50% 0%,
+        rgba(255, 230, 180, 0.38) 0%,
+        rgba(255, 180, 100, 0.12) 40%,
+        rgba(1, 1, 3, 0.98) 85%
+      );
+    }
+
+    /* Linterna puntual que sigue el cursor en escritorio */
+    .flashlight-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      background: radial-gradient(
+        circle 90px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 235, 190, 0.1) 0%,
+        transparent 80%
+      );
+    }
+
+    /* ==========================================================
+       4. SECCIÓN ENCABEZADO Y MARCA
+       ========================================================== */
+    header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .artist-name {
+      font-family: 'Aerosoldier', 'Cinzel', serif;
+      font-size: clamp(5.5rem, 15vw, 11rem); /* BEMZ enorme y adaptable */
+      color: #ffffff;
+      letter-spacing: 8px;
+      line-height: 0.9;
+      text-shadow: 0 0 35px rgba(255, 255, 255, 0.5), 0 0 70px rgba(212, 175, 55, 0.2);
+      margin-bottom: 110px; /* Distancia masiva (~5 dedos) */
+    }
+
+    .subheading {
+      font-size: clamp(0.85rem, 3.5vw, 1.25rem);
+      color: #8a909a;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin-bottom: 45px;
+    }
+
+    .quote-container {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gold-divider {
+      width: 180px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin-bottom: 18px;
+    }
+
+    .quote-text {
+      color: #ffffff;
+      font-size: clamp(1rem, 4vw, 1.35rem);
+      font-style: italic;
+      letter-spacing: 1.5px;
+      font-weight: 300;
+    }
+
+    /* ==========================================================
+       5. REGLAS GENERALES PARA CINTAS INFINITAS HORIZONTALES
+       ========================================================== */
+    .infinite-carousel-container {
+      position: relative;
+      z-index: 2;
+      width: 100vw;
+      overflow: hidden;
+      padding: 30px 0;
+      touch-action: pan-y; /* Permite scroll vertical fluido en móviles mientras se arrastra horizontal */
+    }
+
+    .infinite-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: grab;
+    }
+
+    .infinite-track:active {
+      cursor: grabbing;
+    }
+
+    /* ==========================================================
+       6. CINTA DE DISCIPLINAS (ÓLEO Y ACRÍLICO UNIFICADOS)
+       ========================================================== */
+    .discipline-item {
+      flex: 0 0 auto;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-family: 'Beatstreet', 'Montserrat', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      padding: 10px 45px;
+      cursor: pointer;
+      white-space: nowrap; /* Nunca hace salto de línea en celulares */
+      opacity: 0.05; /* Totalmente a oscuras fuera del centro */
+      transform: scale(0.8);
+      filter: blur(4px);
+      transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease, color 0.3s;
+    }
+
+    .discipline-item.focused {
+      opacity: 1;
+      transform: scale(1.15);
+      filter: blur(0);
+      text-shadow: 0 0 25px rgba(255, 220, 160, 0.9), 0 0 45px rgba(212, 175, 55, 0.7);
+    }
+
+    /* ==========================================================
+       7. CINTA DE OBRAS DE ARTE CON MARCOS ESPECIALES
+       ========================================================== */
+    .artwork-card {
+      flex: 0 0 320px;
+      margin: 0 30px;
+      opacity: 0.04; /* Oscuridad absoluta fuera del centro */
+      transform: scale(0.78);
+      filter: blur(5px);
+      transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+      cursor: pointer;
+    }
+
+    @media (min-width: 768px) {
+      .artwork-card {
+        flex: 0 0 390px;
+        margin: 0 45px;
+      }
+    }
+
+    .artwork-card.focused {
+      opacity: 1;
+      transform: scale(1.08);
+      filter: blur(0);
+      cursor: default;
+    }
+
+    /* MARCO 1: ESMALTE NEGRO BRILLANTE / GLOSSY */
+    .frame-black-gloss {
+      padding: 20px;
+      background: #08080a;
+      border: 4px solid #1c1d22;
+      border-radius: 4px;
+      box-shadow: 
+        inset 0 0 12px rgba(255, 255, 255, 0.22), /* Reflejo especular en bordes */
+        0 20px 40px rgba(0, 0, 0, 0.95),
+        0 0 15px rgba(0, 0, 0, 0.9);
+      position: relative;
+    }
+
+    /* Capa de brillo esmaltado sobre la madera negra */
+    .frame-black-gloss::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+    }
+
+    /* MARCO 2: PLATEADO OSCURO OBRA MAESTRA */
+    .frame-dark-silver {
+      padding: 22px;
+      background: linear-gradient(135deg, #2e323a 0%, #0d0f12 50%, #404550 100%);
+      border: 3px solid #636b77;
+      border-radius: 4px;
+      box-shadow: 
+        0 0 30px rgba(180, 200, 220, 0.25),
+        0 25px 50px rgba(0, 0, 0, 0.95);
+    }
+
+    .artwork-image-container {
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+      background-color: #0d0e12;
+    }
+
+    .artwork-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* INFORMACIÓN DE OBRA EN BLANCO Y MÁS GRANDE */
+    .artwork-info {
+      margin-top: 22px;
+      text-align: center;
+    }
+
+    .artwork-title {
+      font-family: 'Aerosoldier', 'Cinzel', serif;
+      color: #ffffff !important; /* Blanco puro solicitado */
+      font-size: clamp(1.8rem, 4vw, 2.3rem);
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .artwork-desc {
+      color: #cccccc;
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.4;
+    }
+
+    /* ZONAS LATERALES DE SENSIBILIDAD PARA NAVEGACIÓN CONTINUA CON MOUSE */
+    .hover-zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 15vw;
+      z-index: 10;
+      pointer-events: auto;
+    }
+    .hover-zone-left { left: 0; }
+    .hover-zone-right { right: 0; }
+
+    /* ==========================================================
+       8. SECCIÓN CONTACTO (CINTA INFINITA Y FUENTE BEATSTREET)
+       ========================================================== */
+    .contact-section {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .contact-title {
+      font-family: 'Beatstreet', 'Aerosoldier', serif;
+      font-size: clamp(3rem, 8vw, 4.8rem);
+      color: #ffffff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .contact-item {
+      flex: 0 0 auto;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      padding: 15px 50px;
+      opacity: 0.05;
+      transform: scale(0.85);
+      filter: blur(4px);
+      transition: all 0.5s ease;
+      white-space: nowrap;
+    }
+
+    .contact-item.focused {
+      opacity: 1;
+      transform: scale(1.1);
+      filter: blur(0);
+      color: #d4af37;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    }
+
+    /* Indicador visual táctil para celulares */
+    .swipe-hint {
+      display: none;
+      color: #666;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .swipe-hint { display: block; }
+      .hover-zone { display: none; } /* En móviles usaremos deslizar gestual */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Luces cenitales y linterna -->
+  <div class="spotlight-beam"></div>
+  <div class="flashlight-overlay" id="flashlight"></div>
+
+  <div class="museum-viewport">
+    
+    <!-- ENCABEZADO -->
+    <header>
+      <h1 class="artist-name">BEMZ</h1>
+      <p class="subheading">Artista Plástico — Tatuador — Muralista</p>
+      
+      <div class="quote-container">
+        <div class="gold-divider"></div>
+        <p class="quote-text">Siempre seremos eternos aprendices.</p>
+      </div>
+    </header>
+
+    <!-- CINTA INFINITA 1: DISCIPLINAS (Botones) -->
+    <section class="infinite-carousel-container" id="discCarousel">
+      <div class="infinite-track" id="discTrack">
+        <!-- Renderizado dinámicamente con bucle infinito -->
+      </div>
+      <p class="swipe-hint">‹ Desliza para explorar disciplinas ›</p>
+    </section>
+
+    <!-- CINTA INFINITA 2: GALERÍA DE OBRAS EN CUADROS -->
+    <section class="infinite-carousel-container" id="artCarousel">
+      <!-- Zonas de movimiento continuo con mouse -->
+      <div class="hover-zone hover-zone-left" id="artHoverLeft"></div>
+      <div class="hover-zone hover-zone-right" id="artHoverRight"></div>
+
+      <div class="infinite-track" id="artTrack">
+        <!-- Renderizado dinámicamente con bucle infinito -->
+      </div>
+      <p class="swipe-hint">‹ Desliza para explorar obras ›</p>
+    </section>
+
+    <!-- CINTA INFINITA 3: CONTACTO -->
+    <section class="contact-section">
+      <h2 class="contact-title">Contacto</h2>
+      <div class="infinite-carousel-container" id="contactCarousel">
+        <div class="infinite-track" id="contactTrack">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    /* ==========================================================
+       DATOS DE OBRAS (ÓLEO Y ACRÍLICO UNIFICADOS)
+       ========================================================== */
+    const worksData = [
+      { id: 1, title: 'Tatuaje Sombra Real', category: 'tattoos', master: true, desc: 'Sombreado suave y trabajo de línea fina en piel.', img: 'https://picsum.photos/500/600?random=11' },
+      { id: 2, title: 'Tatuaje Geométrico', category: 'tattoos', master: false, desc: 'Blackwork de alto contraste sobre antebrazo.', img: 'https://picsum.photos/500/600?random=12' },
+      { id: 3, title: 'Estudio de Anatomía', category: 'carboncillo', master: false, desc: 'Carboncillo y tiza blanca sobre papel gramado.', img: 'https://picsum.photos/500/600?random=13' },
+      { id: 4, title: 'Mirada en Claroscuro', category: 'carboncillo', master: true, desc: 'Retrato de expresión profunda a carboncillo.', img: 'https://picsum.photos/500/600?random=14' },
+      { id: 5, title: 'Lienzo Mixto I', category: 'oleo-acrilico', master: false, desc: 'Pinceladas de acrílico y veladuras al óleo.', img: 'https://picsum.photos/500/600?random=15' },
+      { id: 6, title: 'Obra Maestra Mixta', category: 'oleo-acrilico', master: true, desc: 'Gran formato en técnica mixta de óleo y acrílico.', img: 'https://picsum.photos/500/600?random=16' },
+      { id: 7, title: 'Muralismo Exterior', category: 'muralismo', master: false, desc: 'Intervención de gran formato en fachada urbana.', img: 'https://picsum.photos/500/600?random=17' },
+      { id: 8, title: 'Horizonte Urbano', category: 'muralismo', master: true, desc: 'Muralismo contemporáneo con pintura en aerosol y acrílico.', img: 'https://picsum.photos/500/600?random=18' }
+    ];
+
+    const categoriesData = [
+      { id: 'tattoos', name: 'Tatuajes' },
+      { id: 'carboncillo', name: 'Carboncillo' },
+      { id: 'oleo-acrilico', name: 'Óleo y Acrílico' }, /* Unificados */
+      { id: 'muralismo', name: 'Muralismo' }
+    ];
+
+    const contactData = [
+      { name: 'Instagram Directo', url: 'https://instagram.com' },
+      { name: 'WhatsApp', url: 'https://wa.me/' },
+      { name: 'Correo Electrónico', url: 'mailto:contacto@bemzart.com' }
+    ];
+
+    /* SEGUIMIENTO DE LINTERNA CON EL MOUSE */
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
+
+    /* ==========================================================
+       CLASE GENERAL PARA CINTAS INFINITAS Y CENTRADAS
+       ========================================================== */
+    class InfiniteCarousel {
+      constructor(containerId, trackId, items, renderCallback, onItemClick) {
+        this.container = document.getElementById(containerId);
+        this.track = document.getElementById(trackId);
+        this.rawItems = items;
+        this.renderCallback = renderCallback;
+        this.onItemClick = onItemClick;
+        
+        // Multiplicamos los elementos para asegurar bucle infinito fluido
+        this.items = [...items, ...items, ...items, ...items, ...items];
+        this.currentIndex = Math.floor(this.items.length / 2); // Inicia en el centro exacto
+        
+        this.startX = 0;
+        this.isDragging = false;
+        this.currentTranslate = 0;
+        this.prevTranslate = 0;
+
+        this.init();
+      }
+
+      init() {
+        this.render();
+        this.attachEvents();
+        setTimeout(() => this.updatePosition(false), 50);
+      }
+
+      render() {
+        this.track.innerHTML = '';
+        this.items.forEach((item, index) => {
+          const element = this.renderCallback(item, index);
+          element.addEventListener('click', () => {
+            if (this.currentIndex !== index) {
+              this.currentIndex = index;
+              this.updatePosition(true);
+              if (this.onItemClick) this.onItemClick(item);
+            }
+          });
+          this.track.appendChild(element);
+        });
+      }
+
+      updatePosition(animate = true) {
+        const elements = this.track.children;
+        if (!elements.length) return;
+
+        if (animate) {
+          this.track.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)';
+        } else {
+          this.track.style.transition = 'none';
+        }
+
+        const centerIndex = this.currentIndex;
+        const targetElement = elements[centerIndex];
+        const containerCenter = window.innerWidth / 2;
+        const elementCenter = targetElement.offsetLeft + targetElement.offsetWidth / 2;
+
+        this.currentTranslate = containerCenter - elementCenter;
+        this.track.style.transform = `translateX(${this.currentTranslate}px)`;
+
+        // Iluminación focal: solo el elemento centrado resalta
+        Array.from(elements).forEach((el, idx) => {
+          if (idx === centerIndex) {
+            el.classList.add('focused');
+          } else {
+            el.classList.remove('focused');
+          }
+        });
+
+        // Reposicionamiento invisible para efecto infinito de 360 grados
+        const minBoundary = elements.length * 0.2;
+        const maxBoundary = elements.length * 0.8;
+        if (this.currentIndex < minBoundary || this.currentIndex > maxBoundary) {
+          setTimeout(() => {
+            const mod = this.rawItems.length;
+            this.currentIndex = (this.currentIndex % mod) + Math.floor(elements.length / 2);
+            this.updatePosition(false);
+          }, 450);
+        }
+      }
+
+      attachEvents() {
+        // Eventos Táctiles (Celulares / Tablets)
+        this.track.addEventListener('touchstart', (e) => {
+          this.startX = e.touches[0].clientX;
+          this.isDragging = true;
+          this.track.style.transition = 'none';
+        }, { passive: true });
+
+        this.track.addEventListener('touchmove', (e) => {
+          if (!this.isDragging) return;
+          const currentX = e.touches[0].clientX;
+          const diff = currentX - this.startX;
+          this.track.style.transform = `translateX(${this.currentTranslate + diff}px)`;
+        }, { passive: true });
+
+        this.track.addEventListener('touchend', (e) => {
+          if (!this.isDragging) return;
+          this.isDragging = false;
+          const endX = e.changedTouches[0].clientX;
+          const diff = endX - this.startX;
+
+          if (Math.abs(diff) > 40) {
+            if (diff < 0) this.currentIndex++;
+            else this.currentIndex--;
+          }
+          this.updatePosition(true);
+        });
+      }
+
+      jumpToCategory(catId) {
+        const indexInRaw = this.rawItems.findIndex(i => i.category === catId || i.id === catId);
+        if (indexInRaw !== -1) {
+          const mod = this.rawItems.length;
+          const currentRawIdx = this.currentIndex % mod;
+          let diff = indexInRaw - currentRawIdx;
+          this.currentIndex += diff;
+          this.updatePosition(true);
+        }
+      }
+    }
+
+    /* ==========================================================
+       INICIALIZACIÓN DE CARRUSELES
+       ========================================================== */
+
+    // 1. Carrusel de Disciplinas
+    const discCarousel = new InfiniteCarousel(
+      'discCarousel', 'discTrack', categoriesData,
+      (item) => {
+        const btn = document.createElement('button');
+        btn.className = 'discipline-item';
+        btn.innerText = item.name;
+        return btn;
+      },
+      (item) => {
+        // Al hacer clic en disciplina, la galería de obras salta a la primera obra de esa disciplina
+        artCarousel.jumpToCategory(item.id);
+      }
+    );
+
+    // 2. Carrusel de Obras de Arte
+    const artCarousel = new InfiniteCarousel(
+      'artCarousel', 'artTrack', worksData,
+      (item) => {
+        const card = document.createElement('div');
+        card.className = `artwork-card ${item.master ? 'frame-dark-silver' : 'frame-black-gloss'}`;
+        card.innerHTML = `
+          <div class="artwork-image-container">
+            <img src="${item.img}" class="artwork-img" alt="${item.title}">
+          </div>
+          <div class="artwork-info">
+            <h3 class="artwork-title">${item.title}</h3>
+            <p class="artwork-desc">${item.desc}</p>
+          </div>
+        `;
+        return card;
+      },
+      (item) => {
+        // Sincroniza la disciplina resaltada con la obra activa
+        discCarousel.jumpToCategory(item.category);
+      }
+    );
+
+    // 3. Carrusel de Contacto
+    const contactCarousel = new InfiniteCarousel(
+      'contactCarousel', 'contactTrack', contactData,
+      (item) => {
+        const a = document.createElement('a');
+        a.className = 'contact-item';
+        a.href = item.url;
+        a.target = '_blank';
+        a.innerText = item.name;
+        return a;
+      }
+    );
+
+    /* NAVEGACIÓN CONTINUA SUAVE AL POSAR EL CURSOR EN LOS BORDES (Escritorio) */
+    let hoverInterval = null;
+    const leftZone = document.getElementById('artHoverLeft');
+    const rightZone = document.getElementById('artHoverRight');
+
+    leftZone.addEventListener('mouseenter', () => {
+      if (hoverInterval) clearInterval(hoverInterval);
+      hoverInterval = setInterval(() => {
+        artCarousel.currentIndex--;
+        artCarousel.updatePosition(true);
+      }, 1200); // Sensibilidad baja / pausada
+    });
+
+    leftZone.addEventListener('mouseleave', () => clearInterval(hoverInterval));
+
+    rightZone.addEventListener('mouseenter', () => {
+      if (hoverInterval) clearInterval(hoverInterval);
+      hoverInterval = setInterval(() => {
+        artCarousel.currentIndex++;
+        artCarousel.updatePosition(true);
+      }, 1200);
+    });
+
+    rightZone.addEventListener('mouseleave', () => clearInterval(hoverInterval));
+
+    // NAVEGACIÓN TECLADO
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        artCarousel.currentIndex++;
+        artCarousel.updatePosition(true);
+      } else if (e.key === 'ArrowLeft') {
+        artCarousel.currentIndex--;
+        artCarousel.updatePosition(true);
+      }
+    });
+
+    // Re-centrar en caso de cambio de tamaño de pantalla u orientación de celular
+    window.addEventListener('resize', () => {
+      discCarousel.updatePosition(false);
+      artCarousel.updatePosition(false);
+      contactCarousel.updatePosition(false);
+    });
+  </script>
+</body>
+</html>
