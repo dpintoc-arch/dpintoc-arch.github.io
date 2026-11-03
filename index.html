@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Javi Bemz — Arte Plástico • Muralismo • Tatuaje | "Siempre seremos eternos aprendices."</title>
+  
+  <!-- SEO & Metadatos Curatoriales -->
+  <meta name="description" content="Portafolio oficial de Javi Bemz. Artista plástico de la Universidad Nacional de Colombia (Facultad de Artes), muralista urbano y tatuador de autor.">
+  <meta name="keywords" content="Javi Bemz, Tatuajes Bogotá, Muralismo Colombia, Graffiti, Universidad Nacional de Colombia, Bellas Artes">
+  <meta name="author" content="Javi Bemz">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Javi Bemz — Mi Trabajo">
+  <meta property="og:description" content="Siempre seremos eternos aprendices. Tatuajes de autor, murales de gran formato y lienzos. Estudiante de la Universidad Nacional de Colombia.">
+  <meta property="og:type" content="website">
+
+  <!-- Tipografía: Montserrat Italic Variable & Montserrat Sans-Serif Regular -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Hojas de Estilo -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Favicon con Logo Oficial -->
+  <link rel="icon" type="image/png" href="assets/javi-logo.png">
+</head>
+<body>
+
+  <!-- Halo de Luz para Desktop -->
+  <div id="cursorHalo"></div>
+
+  <!-- ========================================================================
+       1. HEADER FIJO CON LOGO GRANDE Y LEGIBLE
+       ======================================================================== -->
+  <header class="navbar-header" id="navbar">
+    <div class="navbar-container">
+      
+      <!-- Izquierda: Logo Grande y Claro -->
+      <a href="#inicio" class="nav-brand" aria-label="Javi Bemz - Inicio">
+        <img src="assets/javi-logo.png" alt="Javi Bemz Logo" class="nav-brand-logo-img">
+      </a>
+
+      <!-- Derecha: Menú Minimalista & Botón CTA -->
+      <div class="nav-menu-wrapper">
+        <nav class="nav-nav" aria-label="Navegación Principal">
+          <ul class="nav-menu" id="navMenu">
+            <li><a href="#mi-trabajo" class="nav-link" data-filter="mural">Murales</a></li>
+            <li><a href="#mi-trabajo" class="nav-link" data-filter="tattoo">Tatuajes</a></li>
+            <li><a href="#mi-trabajo" class="nav-link" data-filter="fine-art">Lienzos / Cuadros</a></li>
+            <li><a href="#quien-soy" class="nav-link">¿Quién soy?</a></li>
+          </ul>
+        </nav>
+
+        <!-- Botón CTA destacado -->
+        <a href="https://wa.me/573208201829?text=Hola%20Javi%20Bemz,%20quisiera%20cotizar%20y%20agendar%20una%20cita%20para%20un%20proyecto" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-nav-cta">
+          <span>Cotizar / Agendar Cita</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+
+        <!-- Botón Hamburguesa Móvil -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Abrir Menú">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       2. HERO SECTION CON FOTO DE MURAL OSCURA EN EL FONDO
+       ======================================================================== -->
+  <section class="hero-section" id="inicio">
+    <div class="hero-content">
+      
+      <!-- Insignia Académica Limpia -->
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span>Artes Plásticas • Universidad Nacional de Colombia</span>
+      </div>
+
+      <!-- Logo de Marca Masivo y Destacado -->
+      <div class="hero-logo-box">
+        <img src="assets/javi-logo.png" alt="Javi Bemz" class="hero-logo-img">
+      </div>
+
+      <!-- Frase Insignia del Artista -->
+      <h1 class="hero-motto">
+        "Siempre seremos eternos aprendices."
+      </h1>
+
+      <!-- Subtítulo -->
+      <p class="hero-subtitle">Arte Plástico • Muralismo • Tatuaje</p>
+
+      <!-- CTAs de Entrada Directa -->
+      <div class="hero-actions">
+        <a href="#mi-trabajo" class="btn-hero-hallway" id="btnEnterGallery">
+          <span>Ver Mi Trabajo</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+        <a href="https://wa.me/573208201829?text=Hola%20Javi%20Bemz,%20estoy%20en%20tu%20sitio%20web%20y%20quiero%20agendar%20una%20cita" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-hero-whatsapp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+          <span>Agendar por WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       3. SECCIÓN MI TRABAJO (PASILLO INFINITO CON SNAP AL CENTRO EXACTO)
+       ======================================================================== -->
+  <section class="hallway-section" id="mi-trabajo">
+    
+    <!-- Barra Superior -->
+    <div class="hallway-topbar scroll-spotlight-item">
+      <div class="hallway-header-row">
+        <div>
+          <span class="hallway-section-tag">Portafolio de Obra</span>
+          <h2 class="hallway-main-heading">Mi Trabajo</h2>
+        </div>
+
+        <div class="hallway-instruction-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 8 8 12 12 16"></polyline>
+            <polyline points="16 12 8 12"></polyline>
+          </svg>
+          <span>Desplaza horizontalmente para enfocar cada obra en el centro</span>
+        </div>
+      </div>
+
+      <!-- Filtros de Salas (Tabs) & Flechas -->
+      <div class="hallway-header-row">
+        <div class="hallway-filter-bar" id="filterBar" role="tablist">
+          <button class="filter-tab active" data-category="all" role="tab" aria-selected="true">
+            <span>Todo</span>
+            <span class="tab-count" id="countAll">0</span>
+          </button>
+          <button class="filter-tab" data-category="mural" role="tab" aria-selected="false">
+            <span>Murales</span>
+            <span class="tab-count" id="countMural">0</span>
+          </button>
+          <button class="filter-tab" data-category="tattoo" role="tab" aria-selected="false">
+            <span>Tatuajes</span>
+            <span class="tab-count" id="countTattoo">0</span>
+          </button>
+          <button class="filter-tab" data-category="fine-art" role="tab" aria-selected="false">
+            <span>Lienzos / Cuadros</span>
+            <span class="tab-count" id="countArt">0</span>
+          </button>
+        </div>
+
+        <!-- Flechas de Control Horizontales -->
+        <div class="hallway-nav-controls">
+          <button class="btn-hallway-arrow" id="btnScrollLeft" aria-label="Desplazar a la izquierda">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="btn-hallway-arrow" id="btnScrollRight" aria-label="Desplazar a la derecha">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Viewport del Pasillo Horizontal con Scroll-Snap al Centro -->
+    <div class="hallway-viewport" id="hallwayViewport" tabindex="0" aria-label="Galería interactiva horizontal">
+      <div class="hallway-track" id="hallwayTrack">
+        <!-- Renderizado dinámicamente con centrado automático y sin marcos -->
+      </div>
+    </div>
+
+    <!-- Pie del Pasillo: Indicador Dinámico -->
+    <div class="hallway-footer-row scroll-spotlight-item">
+      <div class="hallway-room-indicator" id="roomIndicator">
+        <span class="room-pulse-dot"></span>
+        <span id="currentRoomLabel">CENTRO: SELECCIÓN DE OBRA</span>
+      </div>
+      <div style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em;">
+        Haz clic en cualquier pieza para ver detalles y cotizar
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================
+       4. SECCIÓN ¿QUIÉN SOY? CON FOTO GRANDE Y DIFUMINADA A NEGRO
+       ======================================================================== -->
+  <section class="artist-bio-section" id="quien-soy">
+    <div class="bio-container scroll-spotlight-item">
+      
+      <!-- Columna Izquierda: Foto Grande Difuminada hacia la Derecha (Sin Marcos) -->
+      <div class="bio-image-col">
+        <div class="bio-image-seamless-wrap">
+          <img src="assets/javi-portrait.jpg" 
+               alt="Javi Bemz - Artista Plástico, Muralista y Tatuador" 
+               class="bio-image-seamless"
+               loading="lazy">
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Texto Limpio Sin Botones ni Bordes Recargados -->
+      <div class="bio-text-col">
+        <span class="bio-tag">Trayectoria</span>
+        <h2 class="bio-title">¿Quién soy?</h2>
+
+        <!-- Formación Académica Limpia -->
+        <p class="bio-academic-text">
+          Estudiante de la Universidad Nacional de Colombia
+          <span>Facultad de Artes</span>
+        </p>
+
+        <blockquote class="bio-lead-quote">
+          "Siempre seremos eternos aprendices."
+        </blockquote>
+
+        <p class="bio-body-p">
+          Inició en el año 2012 en el mundo del graffiti y muralismo siendo uno de los pioneros de esta técnica en un territorio víctima del conflicto colombiano, creando toda una carrera de exploración en el arte a partir de la intervención en el espacio público aportando con esto a la reconstrucción del tejido social, en articulación con organizaciones de cooperación internacional, Ministerio de Cultura, entre otras entidades privadas que le apuestan a un cambio en el país y sus comunidades.
+        </p>
+
+        <p class="bio-body-p">
+          Con base en ello ha llegado a participar en diferentes eventos nacionales de graffiti y muralismo como <strong>Atacarte en Cúcuta</strong>, <strong>Festival Internacional de Muralismo y Arte Público en Chinácota</strong>, <strong>Sur Fest Spray Latino en Bogotá y Santa Marta</strong>, y <strong>Meeting of Styles en Bogotá</strong>.
+        </p>
+
+        <!-- Crédito de Autoría -->
+        <div class="bio-author-credit">
+          <span class="bio-author-name">Por, José Luis Ardila González</span>
+          <span class="bio-author-title">Maestro en Artes Plásticas de la U. Distrital.</span>
+        </div>
+
+        <!-- Festivales & Enlaces Directos a Murales Específicos -->
+        <div class="bio-festivals-wrap">
+          <button class="festival-pill" data-artwork-id="mur-05" title="Ver mural de Atacarte Cúcuta en la galería">
+            <span>Atacarte (Cúcuta)</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <button class="festival-pill" data-artwork-id="mur-chinacota" title="Ver mural de Chinácota en la galería">
+            <span>Chinácota (Arte Público)</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <button class="festival-pill" data-artwork-id="mur-07" title="Ver mural de Sur Fest Spray Latino en la galería">
+            <span>Sur Fest Spray Latino</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <button class="festival-pill" data-artwork-id="mur-06" title="Ver mural de Meeting of Styles en la galería">
+            <span>Meeting of Styles (Bogotá)</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <button class="festival-pill" data-artwork-id="mur-restaurante" title="Ver mural de Restaurante en la galería">
+            <span>Mural Restaurante</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       5. FOOTER / CONTACTO DIRECTO
+       ======================================================================== -->
+  <footer class="contact-section" id="contacto">
+    <div class="contact-container">
+      
+      <div class="contact-header scroll-spotlight-item">
+        <span class="hallway-section-tag">Contacto</span>
+        <h2 class="contact-title font-italic-title">Agenda tu Cita o Cotiza un Proyecto</h2>
+        <p class="contact-subtitle">
+          Atención personalizada, diseño previo y cotización directa para tatuajes de autor, murales de gran formato y obras de caballete.
+        </p>
+      </div>
+
+      <!-- Botón Central de Agendamiento Directo a WhatsApp -->
+      <div class="scroll-spotlight-item">
+        <a href="https://wa.me/573208201829?text=Hola%20Javi%20Bemz,%20quisiera%20agendar%20una%20cita%20y%20cotizar%20un%20proyecto" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="contact-mega-cta">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+          <span>Agendar Cita / Cotizar por WhatsApp</span>
+        </a>
+      </div>
+
+      <!-- Canales Oficiales Directos -->
+      <div class="contact-cards-grid scroll-spotlight-item">
+        
+        <!-- WhatsApp -->
+        <a href="https://wa.me/573208201829?text=Hola%20Javi%20Bemz,%20quisiera%20consultar%20por%20un%20tatuaje%20o%20mural" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="contact-card-box">
+          <div class="contact-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+          </div>
+          <span class="contact-card-label">WhatsApp</span>
+          <span class="contact-card-val">+57 320 820 1829</span>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://instagram.com/javibemz" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="contact-card-box">
+          <div class="contact-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+          <span class="contact-card-label">Instagram Oficial</span>
+          <span class="contact-card-val">@javibemz</span>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://tiktok.com/@javierbemz" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="contact-card-box">
+          <div class="contact-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+            </svg>
+          </div>
+          <span class="contact-card-label">TikTok</span>
+          <span class="contact-card-val">@javierbemz</span>
+        </a>
+
+      </div>
+
+      <!-- Pie Inferior -->
+      <div class="footer-bottom">
+        <div>
+          <span class="footer-credits-brand">JAVI BEMZ</span> © 2025. "Siempre seremos eternos aprendices."
+        </div>
+        <div>
+          Estudiante de la Universidad Nacional de Colombia — Facultad de Artes.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       6. MODAL / LIGHTBOX DE OBRA
+       ======================================================================== -->
+  <div class="modal-backdrop" id="artworkModal" role="dialog" aria-modal="true" aria-hidden="true">
+    
+    <div class="modal-card">
+      <button class="btn-close-modal" id="btnCloseModal" aria-label="Cerrar Obra">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Columna Izquierda: Imagen Ampliada -->
+      <div class="modal-image-col">
+        <button class="modal-nav-btn modal-nav-prev" id="btnModalPrev" aria-label="Obra anterior">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <img id="modalImage" src="" alt="Vista ampliada de la obra">
+
+        <button class="modal-nav-btn modal-nav-next" id="btnModalNext" aria-label="Siguiente obra">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Columna Derecha: Ficha Técnica & WhatsApp CTA -->
+      <div class="modal-info-col">
+        <div class="modal-curatorial-header">
+          <div class="modal-room-tag" id="modalRoomTag">SALA DE EXPOSICIÓN</div>
+          <h3 class="modal-artwork-title" id="modalTitle">Título de la Obra</h3>
+          <p class="modal-artwork-sub" id="modalSubtitle">Subtítulo explicativo</p>
+        </div>
+
+        <!-- Ficha Técnica -->
+        <div class="modal-spec-grid" id="modalSpecGrid">
+          <!-- Renderizado dinámico -->
+        </div>
+
+        <!-- Concepto -->
+        <div class="modal-text-block">
+          <div class="modal-block-label">Concepto y Ejecución</div>
+          <p class="modal-desc-body" id="modalDescription"></p>
+        </div>
+
+        <div class="modal-text-block">
+          <div class="modal-block-label">Nota Curatorial</div>
+          <p class="modal-desc-body" id="modalCuratorialNote" style="font-style: italic;"></p>
+        </div>
+
+        <!-- CTA Directo a WhatsApp -->
+        <div class="modal-whatsapp-cta">
+          <a href="#" id="modalWhatsAppBtn" target="_blank" rel="noopener noreferrer" class="btn-modal-whatsapp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            <span>Consultar por esta pieza / Tatuar algo similar</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
